@@ -1,0 +1,6 @@
+opencv-python-headless
+numpy
+natsort
+scipy
+scikit-image
+ffmpeg-python
