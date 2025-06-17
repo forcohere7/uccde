@@ -1,7 +1,17 @@
 [project]
 name = "finetuned-realesrgan"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Python project for enhancing underwater images and videos using a fine-tuned Real-ESRGAN super-resolution model."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "basicsr>=1.4.2",
+    "facexlib>=0.3.0",
+    "gfpgan>=1.3.8",
+    "numpy>=2.2.6",
+    "opencv-python>=4.11.0.86",
+    "pillow>=11.2.1",
+    "torch>=2.7.1",
+    "torchvision>=0.22.1",
+    "tqdm>=4.67.1",
+]
