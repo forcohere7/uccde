@@ -1,5 +1,5 @@
 [project]
-name = "uccie"
+name = "uccde"
 version = "0.1.0"
 description = "A Python project for enhancing underwater images and videos using optimized color correction and guided filtering techniques."
 readme = "README.md"
