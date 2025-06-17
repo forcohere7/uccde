@@ -1,4 +1,5 @@
 .venv/
+input/
 output/
 
 # Byte-compiled / optimized / DLL files
