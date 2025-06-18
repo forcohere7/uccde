@@ -14,11 +14,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv globally
 RUN pip install --no-cache-dir uv
 
-# Copy pyproject.toml and uv.lock (assuming they exist for dependency management)
+# Copy pyproject.toml and uv.lock
 COPY pyproject.toml uv.lock ./
 
 # Install Python dependencies using uv and ensure virtual environment
 RUN uv sync --frozen
+
+COPY dependency_fix.sh .
+RUN chmod +x dependency_fix.sh
+RUN ./dependency_fix.sh
 
 # Copy model file
 COPY model/net_g_5000.pth model/net_g_5000.pth
