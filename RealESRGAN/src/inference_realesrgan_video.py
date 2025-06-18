@@ -32,7 +32,6 @@ def main():
     parser.add_argument('--outscale', type=float, default=4, help='The final upsampling scale')
     parser.add_argument('--suffix', type=str, default='out', help='Suffix of the restored video')
     parser.add_argument('--tile', type=int, default=0, help='Tile size, 0 for no tile during testing')
-    parser.add_argument('--fp32', action='store_true', help='Use FP32 precision during inference (default: FP16)')
     parser.add_argument('--ffmpeg_bin', type=str, default='ffmpeg', help='Path to ffmpeg executable')
     args = parser.parse_args()
 
@@ -61,7 +60,7 @@ def main():
         tile=args.tile,
         tile_pad=10,
         pre_pad=0,
-        half=not args.fp32  # FP16 by default, FP32 if --fp32 is provided
+        half=False  # Use fp32 precision
     )
 
     # Get video metadata
