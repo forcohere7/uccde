@@ -1,6 +1,8 @@
 .venv/
 input/
 output/
+*.md
+Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
