@@ -26,4 +26,8 @@ COPY . .
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Command to run the inference script
+<<<<<<< HEAD
 CMD ["python", "ip_inference.py"]
+=======
+CMD ["python", "ip_inference.py", "--input_dir", "/app/input", "--output_dir", "/app/output"]
+>>>>>>> orchestrator

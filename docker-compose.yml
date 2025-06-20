@@ -1,0 +1,25 @@
+services:
+  image-processing:
+    build:
+      context: ./image-processing
+      dockerfile: Dockerfile
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./temp:/app/temp
+    environment:
+      - CONFIG_PATH=/app/config.yml
+    working_dir: /app
+
+  real-esrgan:
+    build:
+      context: ./RealESRGAN
+      dockerfile: Dockerfile
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./temp:/app/temp
+    environment:
+      - CONFIG_PATH=/app/config.yml
+    entrypoint: ["./run_script.sh"]
+    working_dir: /app

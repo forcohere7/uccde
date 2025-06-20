@@ -18,4 +18,8 @@ dependencies = [
     "scikit-image==0.25.2",
     "scipy==1.15.3",
     "tifffile==2025.6.11",
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> orchestrator
