@@ -1,6 +1,4 @@
 CONFIG = {
-    'input_dir': 'input',
-    'output_dir': 'output',
     'block_size': 9,
     'gimfilt_radius': 50,
     'eps': 1e-3,

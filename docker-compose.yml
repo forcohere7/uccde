@@ -1,0 +1,30 @@
+services:
+  image-processing:
+    build:
+      context: ./image-processing
+      dockerfile: Dockerfile
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./temp:/app/temp
+      - ./config.yml:/app/config.yml:ro
+    environment:
+      - CONFIG_PATH=/app/config.yml
+      - PATH=/app/.venv/bin:$PATH
+    working_dir: /app
+    profiles: ["manual"]
+
+  real-esrgan:
+    build:
+      context: ./RealESRGAN
+      dockerfile: Dockerfile
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./temp:/app/temp
+      - ./config.yml:/app/config.yml:ro
+    environment:
+      - CONFIG_PATH=/app/config.yml
+    entrypoint: ["./run_script.sh"]
+    working_dir: /app
+    profiles: ["manual"]

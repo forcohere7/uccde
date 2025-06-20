@@ -11,7 +11,7 @@ def process_video_frame(frame, colour_corrector):
     enhanced_frame = image_enhancement(corrected_frame)
     return cv2.cvtColor(enhanced_frame, cv2.COLOR_RGB2BGR)
 
-def process_video(file, input_dir=CONFIG['input_dir'], output_dir=CONFIG['output_dir']):
+def process_video(file, input_dir, output_dir):
     """Processes a single video and preserves original audio."""
     file_path = os.path.join(input_dir, file)
     prefix = file.split('.')[0]
