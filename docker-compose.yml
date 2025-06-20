@@ -7,12 +7,9 @@ services:
       - ./input:/app/input
       - ./output:/app/output
       - ./temp:/app/temp
-      - ./config.yml:/app/config.yml:ro
     environment:
       - CONFIG_PATH=/app/config.yml
-      - PATH=/app/.venv/bin:$PATH
     working_dir: /app
-    profiles: ["manual"]
 
   real-esrgan:
     build:
@@ -22,9 +19,7 @@ services:
       - ./input:/app/input
       - ./output:/app/output
       - ./temp:/app/temp
-      - ./config.yml:/app/config.yml:ro
     environment:
       - CONFIG_PATH=/app/config.yml
     entrypoint: ["./run_script.sh"]
     working_dir: /app
-    profiles: ["manual"]
