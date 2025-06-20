@@ -19,6 +19,14 @@ The pipeline supports both local execution with `uv` and containerized execution
 
 ---
 
+### **Model Fine-tuning**
+
+The Real-ESRGAN model was fine-tuned using the publicly available **USR-248 dataset**, which consists of 248 paired underwater low-resolution and high-resolution images. Training was conducted for approximately 4,000 iterations using a free Google Colab GPU environment due to computational constraints. While the dataset size and training time were limited, the model demonstrated noticeable qualitative improvements over the pretrained version.
+
+For evaluation, a separate benchmark dataset such as **UIEB (Underwater Image Enhancement Benchmark)** was used to assess the enhancement quality using metrics like **PSNR** and **MSE**.
+
+---
+
 ### **Setup Instructions**
 
 #### **Docker Execution (Recommended)**
