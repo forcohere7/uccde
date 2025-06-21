@@ -1,4 +1,4 @@
-**Colour Correction and Detail Enhancement in Underwater Images using Hybrid Real-ESRGAN**
+# Colour Correction and Detail Enhancement in Underwater Images using Hybrid Real-ESRGAN
 
 This project delivers a comprehensive pipeline for enhancing underwater images and videos by integrating underwater color correction techniques with a fine-tuned Real-ESRGAN model for super-resolution and detail refinement. The process consists of two primary stages:
 
@@ -7,9 +7,7 @@ This project delivers a comprehensive pipeline for enhancing underwater images a
 
 The pipeline supports both local execution with `uv` and containerized execution using Docker and Docker Compose. Designed to be modular, scalable, and user-friendly, the pipeline is suitable for both researchers and practical deployments.
 
----
-
-### **Key Features**
+## Key Features
 
 * Modular Docker architecture for each processing stage.
 * Fine-tuned Real-ESRGAN model for underwater image enhancement.
@@ -17,19 +15,15 @@ The pipeline supports both local execution with `uv` and containerized execution
 * Compatible with various image and video formats.
 * Scripted pipeline for easy automation.
 
----
-
-### **Model Fine-tuning**
+## Model Fine-tuning
 
 The Real-ESRGAN model was fine-tuned using the publicly available **USR-248 dataset**, which consists of 248 paired underwater low-resolution and high-resolution images. Training was conducted for approximately 4,000 iterations using a free Google Colab GPU environment due to computational constraints. While the dataset size and training time were limited, the model demonstrated noticeable qualitative improvements over the pretrained version.
 
 For evaluation, a separate benchmark dataset such as **UIEB (Underwater Image Enhancement Benchmark)** was used to assess the enhancement quality using metrics like **PSNR** and **MSE**.
 
----
+## Setup Instructions
 
-### **Setup Instructions**
-
-#### **Docker Execution (Recommended)**
+### Docker Execution (Recommended)
 
 1. **Edit Configuration**
 
@@ -43,7 +37,11 @@ pipeline:
   directories:
     input_folder: input
     output_folder: output
+  rebuild: false  # Set to true to rebuild Docker images
 ```
+
+* The `rebuild` field controls whether Docker images are rebuilt. Set to `true` to force a rebuild, or keep as `false` (default) to skip rebuilding.
+* The pipeline sets `COMPOSE_BAKE=true` to enable specific Docker Compose features.
 
 2. **Prepare Directories**
 
@@ -64,10 +62,10 @@ chmod +x orchestrator.sh
 This script will:
 
 * Validate configuration.
-* Build Docker images.
+* Build Docker images (if `rebuild: true` in `config.yml`).
 * Run the color correction service and then Real-ESRGAN.
 
-#### **Local Execution (Advanced)**
+### Local Execution (Advanced)
 
 1. **Color Correction Module**
 
@@ -91,9 +89,7 @@ python src/inference_realesrgan_image.py -n RealESRGAN_x4plus -i ../temp -o ../o
 
 Use `inference_realesrgan_video.py` for video enhancement.
 
----
-
-### **Troubleshooting**
+## Troubleshooting
 
 * **CUDA OOM**: Reduce `--tile` value.
 * **No Output**: Verify input paths and extensions.
@@ -101,9 +97,7 @@ Use `inference_realesrgan_video.py` for video enhancement.
 * **Permission Issues**: Run `chmod -R u+rwx input output temp`.
 * **Dependency Errors**: Use `dependency_fix.sh`.
 
----
-
-### **References**
+## References
 
 * Song, W., Wang, Y., Huang, D., & Tjondronegoro, D. (2018). A rapid scene depth estimation model based on underwater light attenuation prior. *PCM 2018*, Springer.
 * Huang, D., Wang, Y., Song, W., Sequeira, J., & Mavromatis, S. (2018). Shallow-water image enhancement using relative global histogram stretching. *MMM 2018*, Springer.
