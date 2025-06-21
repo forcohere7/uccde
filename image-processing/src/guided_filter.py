@@ -3,6 +3,7 @@ import cv2
 
 class GuidedFilter:
     """Optimized guided filter for image processing."""
+
     def __init__(self, input_image, radius=5, epsilon=0.4):
         self._radius = 2 * radius + 1
         self._epsilon = epsilon
@@ -28,7 +29,7 @@ class GuidedFilter:
         self._ig_mean = cv2.blur(ig, ksize)
         self._ib_mean = cv2.blur(ib, ksize)
 
-        # Compute variances and covariances in one pass
+        # Compute variances and covariances
         irr = cv2.blur(ir * ir, ksize) - self._ir_mean ** 2 + eps
         irg = cv2.blur(ir * ig, ksize) - self._ir_mean * self._ig_mean
         irb = cv2.blur(ir * ib, ksize) - self._ir_mean * self._ib_mean

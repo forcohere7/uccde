@@ -25,16 +25,16 @@ def stretch_range(r_array, height, width):
     return dr_min, sr_max, mode
 
 def global_stretching_ab(a, height, width):
-    """Applies global stretching to a or b channel in LAB color space."""
-    return a * (1.3 ** (1 - np.abs(a / 128)))
+    """Applies global stretching to a or b channel in LAB color space with reduced enhancement."""
+    return a * (1.1 ** (1 - np.abs(a / 128)))
 
 def basic_stretching(img):
-    """Applies basic stretching to each channel of the image."""
+    """Applies basic stretching to each channel using percentiles."""
     img = img.astype(np.float64)
-    min_vals = np.min(img, axis=(0, 1), keepdims=True)
-    max_vals = np.max(img, axis=(0, 1), keepdims=True)
-    img = np.where(max_vals != min_vals, (img - min_vals) * 255 / (max_vals - min_vals), img)
-    return np.clip(img, 0, 255).astype(np.uint8)
+    min_vals = np.percentile(img, 1, axis=(0,1))
+    max_vals = np.percentile(img, 99, axis=(0,1))
+    img = np.clip((img - min_vals) * 255 / (max_vals - min_vals + 1e-10), 0, 255)
+    return img.astype(np.uint8)
 
 def global_stretching_luminance(img_l, height, width):
     """Applies global histogram stretching to luminance channel."""

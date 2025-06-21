@@ -5,6 +5,7 @@ from .config import CONFIG
 
 class ColourCorrection:
     """Optimized color correction for underwater images."""
+
     def __init__(self, block_size=CONFIG['block_size'], gimfilt_radius=CONFIG['gimfilt_radius'], eps=CONFIG['eps']):
         self.block_size = block_size
         self.gimfilt_radius = gimfilt_radius
@@ -33,15 +34,18 @@ class ColourCorrection:
                          np.clip(r, 0, 255).astype(np.uint8)])
 
     def _estimate_background_light(self, img, depth_map):
-        """Estimates the background light for the image."""
+        """Estimates the background light by averaging the top 10 brightest pixels."""
         height, width = img.shape[:2]
         img = img.astype(np.float32) / 255.0 if img.dtype == np.uint8 else img
         n_bright = int(np.ceil(0.001 * height * width))
         indices = np.argpartition(depth_map.ravel(), -n_bright)[-n_bright:]
         candidates = img.reshape(-1, 3)[indices]
         magnitudes = np.linalg.norm(candidates, axis=1)
-        max_idx = np.argmax(magnitudes)
-        return candidates[max_idx] * 255.0
+        sorted_indices = np.argsort(magnitudes)[::-1]
+        top_n = 10
+        top_candidates = candidates[sorted_indices[:top_n]]
+        atmospheric_light = np.mean(top_candidates, axis=0) * 255.0
+        return atmospheric_light
 
     def _compute_depth_map(self, img):
         """Computes the depth map for the image."""
@@ -56,6 +60,13 @@ class ColourCorrection:
         background_light = background_light / 255.0
         max_values = np.max(np.abs(img - background_light), axis=(0, 1)) / np.maximum(background_light, 1 - background_light)
         return 1 - np.max(max_values)
+
+    def _global_stretching_depth(self, img_l):
+        """Applies global histogram stretching to the depth map."""
+        flat = img_l.ravel()
+        indices = np.argsort(flat)
+        i_min, i_max = flat[indices[len(flat)//2000]], flat[indices[-len(flat)//2000]]
+        return np.clip((img_l - i_min) / (i_max - i_min + 1e-10), 0, 1)
 
     def _get_rgb_transmission(self, depth_map):
         """Computes RGB transmission maps."""
@@ -91,10 +102,3 @@ class ColourCorrection:
         transmission_b, transmission_g, transmission_r = self._get_rgb_transmission(d_f)
         transmission = self._refine_transmission_map(transmission_b, transmission_g, transmission_r, img_compensated)
         return self._compute_scene_radiance(img_compensated, transmission, atmospheric_light)
-
-    def _global_stretching_depth(self, img_l):
-        """Applies global histogram stretching to the depth map."""
-        flat = img_l.ravel()
-        indices = np.argsort(flat)
-        i_min, i_max = flat[indices[len(flat)//2000]], flat[indices[-len(flat)//2000]]
-        return np.clip((img_l - i_min) / (i_max - i_min + 1e-10), 0, 1)
