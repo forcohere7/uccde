@@ -2,21 +2,24 @@
 
 set -e
 
+# Set COMPOSE_BAKE environment variable
+export COMPOSE_BAKE=true
+
 # Function to install yq if not present
 install_yq() {
-  if ! command -v yq >/dev/null; then
-    echo "yq not found, installing..."
+  if ! command -v yq >/dev/null || ! yq --version | grep -q "mikefarah"; then
+    echo "Installing Go-based yq (mikefarah/yq)..."
     if [[ "$(uname -s)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then
       wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /tmp/yq || { echo "Error: Failed to download yq"; exit 1; }
       sudo mv /tmp/yq /usr/local/bin/yq || { echo "Error: Failed to move yq to /usr/local/bin"; exit 1; }
       sudo chmod +x /usr/local/bin/yq || { echo "Error: Failed to make yq executable"; exit 1; }
-      echo "yq installed successfully"
+      echo "yq (Go-based) installed successfully"
     else
-      echo "Error: yq not found. Please install yq manually for your system (e.g., 'apt install yq' on Ubuntu or 'brew install yq' on macOS)"
+      echo "Unsupported platform. Please install yq manually from https://github.com/mikefarah/yq"
       exit 1
     fi
   else
-    echo "yq is already installed"
+    echo "Correct yq (Go-based) is already installed"
   fi
 }
 
@@ -34,6 +37,7 @@ IP_ENABLED=$(yq e '.pipeline.services.ip' "$CONFIG_FILE")
 REALESRGAN_ENABLED=$(yq e '.pipeline.services.realesrgan' "$CONFIG_FILE")
 INPUT_DIR=$(yq e '.pipeline.directories.input_folder' "$CONFIG_FILE")
 OUTPUT_DIR=$(yq e '.pipeline.directories.output_folder' "$CONFIG_FILE")
+REBUILD=$(yq e '.pipeline.rebuild // false' "$CONFIG_FILE")  # Default to false if not set
 TEMP_DIR="./temp"
 
 # Validate directories
@@ -50,8 +54,13 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
-# Build images
-docker-compose build
+# Build images if rebuild is enabled
+if [ "$REBUILD" = "true" ]; then
+  echo "Rebuilding Docker Compose services..."
+  docker-compose build
+else
+  echo "Skipping Docker Compose build (rebuild=false)"
+fi
 
 # Run services
 if [ "$IP_ENABLED" = "true" ] && [ "$REALESRGAN_ENABLED" = "true" ]; then
