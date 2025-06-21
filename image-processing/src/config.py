@@ -3,6 +3,7 @@ CONFIG = {
     'gimfilt_radius': 50,
     'eps': 1e-3,
     'rb_compensation_flag': 0,  # 0: Compensate both Red and Blue, 1: Compensate only Red
+    'enhancement_strength': 0.6, # Control enhancement intensity
     'video_extensions': ['.mp4', '.avi', '.mov'],  # Supported video formats
     'output_video_fps': 30,  # Default output video frame rate
     'output_video_codec': 'mp4v',  # Codec for output video
