@@ -1,7 +1,7 @@
 pipeline:
   services:
     ip: true
-    realesrgan: false
+    realesrgan: true
   directories:
     input_folder: input
     output_folder: output
