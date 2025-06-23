@@ -4,15 +4,14 @@ channels:
   - defaults
 dependencies:
   - python=3.12
-  - numpy
-  - scipy
-  - scikit-image
-  - opencv
-  - tqdm
-  - pillow
-  - ffmpeg
   - pip
   - pip:
+      - numpy
+      - scipy
+      - scikit-image
+      - opencv-python
+      - tqdm
+      - pillow
       - basicsr
       - facexlib
       - gfpgan
