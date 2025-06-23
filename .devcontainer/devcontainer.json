@@ -1,0 +1,4 @@
+{
+  "name": "No Auto Conda",
+  "postCreateCommand": "echo 'Skipping auto Conda environment setup...'"
+}
