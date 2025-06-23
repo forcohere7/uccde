@@ -1,4 +1,4 @@
-name: /workspaces/uccde/.conda
+name: conda
 channels:
   - defaults
 dependencies:
@@ -75,4 +75,3 @@ dependencies:
       - triton==3.3.1
       - werkzeug==3.1.3
       - yapf==0.43.0
-prefix: /workspaces/uccde/.conda
