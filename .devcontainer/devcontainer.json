@@ -1,4 +1,19 @@
 {
-  "name": "No Auto Conda",
-  "postCreateCommand": "echo 'Skipping auto Conda environment setup...'"
+  "name": "dev-env",
+  "postCreateCommand": "sudo apt update && sudo apt install -y libopencv-dev ffmpeg",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": []
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/conda:1": {}
+  },
+  "forwardPorts": [],
+  "mounts": [],
+  "remoteUser": "vscode"
 }
