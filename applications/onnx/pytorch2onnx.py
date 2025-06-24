@@ -1,30 +1,43 @@
+import argparse
 import torch
 import torch.onnx
 from basicsr.archs.rrdbnet_arch import RRDBNet
 
-def main():
-    input_model_path = '../../RealESRGAN/model/net_g_5000.pth'
-    output_onnx_path = '../../RealESRGAN/model/net_g_5000.onnx'
-    use_params_ema = True  # Set to False if you want to use 'params' instead of 'params_ema'
-
-    # Initialize model
+def main(args):
     model = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=4)
 
-    # Load model weights
-    keyname = 'params_ema' if use_params_ema else 'params'
-    model.load_state_dict(torch.load(input_model_path)[keyname])
-
-    # Set model to evaluation mode on CPU
+    keyname = 'params' if args.params else 'params_ema'
+    model.load_state_dict(torch.load(args.input)[keyname])
     model.eval()
-    model.cpu()
 
-    # Dummy input for ONNX export
     x = torch.rand(1, 3, 64, 64)
 
-    # Export the model
     with torch.no_grad():
-        torch_out = torch.onnx.export(model, x, output_onnx_path, opset_version=11, export_params=True)
-    print("ONNX export completed.")
+        torch.onnx.export(
+            model, x, args.output, opset_version=11, export_params=True
+        )
+
+    print(f"ONNX model exported to: {args.output}")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description="Convert PyTorch model to ONNX")
+    parser.add_argument(
+        '--input',
+        type=str,
+        default='../../RealESRGAN/model/net_g_5000.pth',
+        help='Input model path'
+    )
+    parser.add_argument(
+        '--output',
+        type=str,
+        default='../../RealESRGAN/model/net_g_5000.onnx',
+        help='Output ONNX path'
+    )
+    parser.add_argument(
+        '--params',
+        action='store_true',
+        help='Use params instead of params_ema (default is params_ema)'
+    )
+
+    args = parser.parse_args()
+    main(args)
