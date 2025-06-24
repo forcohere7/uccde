@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv globally
 RUN pip install --no-cache-dir uv
 
+# Set UV_HTTP_TIMEOUT for uv sync
+ENV UV_HTTP_TIMEOUT=60
+
 # Copy pyproject.toml and uv.lock
 COPY pyproject.toml uv.lock .
 
