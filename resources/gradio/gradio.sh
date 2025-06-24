@@ -2,7 +2,15 @@
 
 set -e
 
-# Function to set up virtual environment and install Gradio
+# Set COMPOSE_BAKE environment variable
+export COMPOSE_BAKE=true
+echo "COMPOSE_BAKE is set to $COMPOSE_BAKE"
+
+# Step 1: Build Docker containers
+echo "Building Docker containers..."
+docker-compose build || { echo "Error: Docker Compose build failed"; exit 1; }
+
+# Step 2: Function to set up virtual environment and install Gradio
 setup_venv() {
   VENV_DIR="./venv"
   if [ ! -d "$VENV_DIR" ]; then
@@ -22,9 +30,9 @@ setup_venv() {
   fi
 }
 
-# Set up virtual environment and install Gradio
+# Step 3: Set up virtual environment and install Gradio
 setup_venv
 
-# Run the Gradio UI
+# Step 4: Run the Gradio UI
 echo "Starting Gradio UI..."
 python gradio_ui.py

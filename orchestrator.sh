@@ -2,7 +2,7 @@
 
 set -e
 
-# Set COMPOSE_BAKE and UV_HTTP_TIMEOUT environment variable
+# Set COMPOSE_BAKE environment variable
 export COMPOSE_BAKE=true
 
 # Function to install yq if not present
