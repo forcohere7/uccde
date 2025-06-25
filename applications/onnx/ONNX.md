@@ -112,6 +112,7 @@ python onnx_inference.py \
   --input_path input.png \
   --output_path output.png \
   --output_scale 4
+  --tile 400
 ```
 
 #### Arguments
