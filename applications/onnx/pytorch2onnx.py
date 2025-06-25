@@ -4,7 +4,6 @@ import torch
 import torch.onnx
 from basicsr.archs.rrdbnet_arch import RRDBNet
 
-
 def main(args):
     # Load model configuration
     with open(args.config, 'r') as reader:

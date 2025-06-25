@@ -1,14 +1,10 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 import math
 import time
 from typing import Optional, Tuple, List
-
 import cv2
 import numpy as np
 import onnxruntime as ort
-
 
 class BaseModel:
     """Inference with ONNXRuntime"""
@@ -33,7 +29,6 @@ class BaseModel:
         input = self.sess.get_inputs()[0].name
         output = self.sess.get_outputs()[0].name
         return self.sess.run([output], {input: img})[0]
-
 
 class RealESRGAN:
     def __init__(self,
@@ -243,16 +238,20 @@ if __name__ == '__main__':
         help='Specify ONNX model path, defaults to ../../RealESRGAN/model/net_g_5000.onnx'
     )
     parser.add_argument(
-        '--input_path', type=str, default='input.jpg',
-        help='Specify input image path, defaults to input.jpg'
+        '--input_path', type=str, default='input.png',
+        help='Specify input image path, defaults to input.png'
     )
     parser.add_argument(
-        '--output_path', type=str, default='output.jpg',
-        help='Specify output image path, defaults to output.jpg'
+        '--output_path', type=str, default='output.png',
+        help='Specify output image path, defaults to output.png'
     )
     parser.add_argument(
         '--output_scale', type=int, default=4,
         help='Specify the output scale, defaults to 4'
+    )
+    parser.add_argument(
+        '--tile', type=int, default=0,
+        help='Tile size for tiled inference. Set 0 to disable. Useful for large images. Defaults to 0'
     )
     parser.add_argument(
         '--num_threads', type=int, default=-1,
@@ -267,13 +266,14 @@ if __name__ == '__main__':
     model = RealESRGAN(
         args.model_path,
         scale=args.output_scale,
+        tile=args.tile,
         intra_op_num_threads=args.num_threads,
         providers=args.providers.split(',')
     )
     img = cv2.imread(args.input_path, cv2.IMREAD_UNCHANGED)
-    print('Start to enhance...')
+    print('Starting enhancement...')
     start_time = time.time()
     output, _ = model.enhance(img, outscale=args.output_scale)
     print('Inference time:', time.time() - start_time)
     cv2.imwrite(args.output_path, output)
-    print(f'The enhanced image successfully saved to {args.output_path}')
+    print(f'Enhanced image saved to {args.output_path}')

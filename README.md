@@ -97,8 +97,30 @@ Use `inference_realesrgan_video.py` for video enhancement.
 * **Permission Issues**: Run `chmod -R u+rwx input output temp`.
 * **Dependency Errors**: Use `dependency_fix.sh`.
 
-## References
+## Primary Paper References
 
 * Song, W., Wang, Y., Huang, D., & Tjondronegoro, D. (2018). A rapid scene depth estimation model based on underwater light attenuation prior. *PCM 2018*, Springer.
 * Huang, D., Wang, Y., Song, W., Sequeira, J., & Mavromatis, S. (2018). Shallow-water image enhancement using relative global histogram stretching. *MMM 2018*, Springer.
 * Aghelan, A. (2022). Underwater Images Super-Resolution Using GAN-based Model. *arXiv:2211.03550*.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+It uses a fine-tuned model based on [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), which is released under the BSD 3-Clause License. Portions of the source code, including the inference script, have been reused or modified from the original Real-ESRGAN repository and are redistributed under the terms of the BSD 3-Clause License.
+Credit to the original authors is retained as per the license.
+
+The model was fine-tuned on the USR-248 dataset.
+
+---
+
+## Acknowledgements
+
+- Real-ESRGAN © 2021 Xintao Wang  
+  License: BSD 3-Clause  
+  Repository: https://github.com/xinntao/Real-ESRGAN
+
+Implementations of the following methods were developed from scratch based on their original papers. Unofficial GitHub implementations were referred to only for conceptual understanding:
+
+- ULAP (Underwater Light Attenuation Prior)
+- RGHS (Relative Global Histogram Stretching)
